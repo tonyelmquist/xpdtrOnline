@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import {createStore} from 'redux';
-import rootReducer from '../reducers/rootReducer';
+import reducers from '../reducers';
 import App from './App';
 
 class Root extends Component {

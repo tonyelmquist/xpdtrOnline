@@ -1,104 +1,81 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {
   Button,
   Segment,
   Container,
   Grid,
+  Sidebar,
+  Menu,
+  Icon,
+  Image,
+  Header
 } from "semantic-ui-react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import axios from "axios";
-import SelectedList from "../components/SelectedList";
-import {setCurrencies, selectCurrency, deselectCurrency, deselectAll} from '../actions/currencies';
+
+import ToDoList from "./ToDoList";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      visible: false
     };
   }
 
-  componentDidMount() {
-    axios
-      .get(`https://data.norges-bank.no/api/data/EXR?lastNObservations=1`) // fetch the current XKCD comic. The site does not support CORS requests, so we make the request via a pass-through node server
-      .then(response => {
-        this.props.dispatch(setCurrencies(response.data));
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
-
-  selectCurrency = currency => {
-    this.props.dispatch(selectCurrency(currency));
-  };
-
-  deselectCurrency = currency => {
-    this.props.dispatch(deselectCurrency(currency));
-  };
-
-  deselectAll = () => {
-    this.props.dispatch(deselectAll());
-  };
-
+  toggleVisibility = () => this.setState({ visible: !this.state.visible });
   render() {
+    const { visible } = this.state;
     return (
-      <Container>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={1} />
-            <Grid.Column width={6}>
-              <h1>Currencies</h1>
-              <p>click to select</p>
-            </Grid.Column>
-            <Grid.Column width={2} />
-            <Grid.Column width={6}>
-              <h1>Selected Currencies</h1>
-              <span>click to de-select</span>
-              <Button
-                className="deselect-button"
-                onClick={() => this.deselectAll()}
-                color="blue"
-              >
-                deselect all
-              </Button>
-            </Grid.Column>
-            <Grid.Column width={1} />
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={1} />
-            <Grid.Column width={6}>
-             <SelectedList
-                currencies={this.props.currencies}
-                handleClick={this.selectCurrency}
-                returnSelected={false}
-              />
-            </Grid.Column>
-            <Grid.Column width={2} />
-            <Grid.Column width={6}>
-              <SelectedList
-                currencies={this.props.currencies}
-                handleClick={this.deselectCurrency}
-                returnSelected={true}
-              />
-            </Grid.Column>
-            <Grid.Column width={1} />
-          </Grid.Row>
-        </Grid>
-      </Container>
+      <Sidebar.Pushable as={Segment}>
+        <Sidebar
+          as={Menu}
+          animation="push"
+          width="thin"
+          visible={visible}
+          icon="labeled"
+          vertical
+          inverted
+        >
+          <Menu.Item name="home">
+            <Icon name="home" />
+            Home
+          </Menu.Item>
+          <Menu.Item name="projects">
+            <Icon name="folder open" />
+            Projects
+          </Menu.Item>
+          <Menu.Item name="tasks">
+            <Icon name="tasks" />
+            Tasks
+          </Menu.Item>
+          <Menu.Item name="buildings">
+            <Icon name="building outline" />
+            Buildings
+          </Menu.Item>
+          <Menu.Item name="contacts">
+            <Icon name="address book outline" />
+            Contacts
+          </Menu.Item>
+
+          <Menu.Item name="settings">
+            <Icon name="cogs" />
+            Settings
+          </Menu.Item>
+        </Sidebar>
+        <Sidebar.Pusher>
+          <Segment basic>
+            <Button onClick={this.toggleVisibility}>Toggle Visibility</Button>
+            <Header as="h3">Application Content</Header>
+            <Image src="/assets/images/wireframe/paragraph.png" />
+          </Segment>
+        </Sidebar.Pusher>
+      </Sidebar.Pushable>
     );
   }
 }
 
-App.propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    currencies: PropTypes.array.isRequired
-};
-
-const mapStateToProps = state => ({
-    currencies: state.currencies,
-});
-
-export default connect(mapStateToProps)(App);
+export default App;
