@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import * as actions from "../actions";
 import ToDoListItem from "../components/ToDoListItem";
+import axios from "axios";
+import {Icon} from 'semantic-ui-react';
 
 class ToDoList extends Component {
   state = {
@@ -14,11 +16,30 @@ class ToDoList extends Component {
     this.setState({ addFormValue: event.target.value });
   };
 
+  getDOBJob = addFormValue => {
+    const { addToDo } = this.props;
+    axios
+      .get(
+        `https://data.cityofnewyork.us/resource/rvhx-8trz.json?job__=${addFormValue}`
+      ) // fetch the current XKCD comic. The site does not support CORS requests, so we make the request via a pass-through node server
+      .then(response => {
+        const newJob = {
+          title: addFormValue,
+          filings: response.data
+        }; // get the number of the latest cartoon
+        addToDo(newJob);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
   handleFormSubmit = event => {
     const { addFormValue } = this.state;
-    const { addToDo } = this.props;
+
     event.preventDefault();
-    addToDo({ title: addFormValue });
+    //   addToDo({ title: addFormValue });
+    this.getDOBJob(addFormValue);
     this.setState({ addFormValue: "" });
   };
 
@@ -36,7 +57,7 @@ class ToDoList extends Component {
                 id="toDoNext"
                 type="text"
               />
-              <label htmlFor="toDoNext">What To Do Next</label>
+              <label htmlFor="toDoNext">Add Filing</label>
             </div>
           </form>
         </div>
@@ -59,7 +80,7 @@ class ToDoList extends Component {
           id="nothing-was-found"
           src="/img/nothing.png"
         />
-        <h4>You have completed all the tasks</h4>
+        <h4>You have no filings</h4>
         <p>Start by clicking add button in the bottom of the screen</p>
       </div>
     );
@@ -83,9 +104,9 @@ class ToDoList extends Component {
             className="btn-floating btn-large teal darken-4"
           >
             {addFormVisible ? (
-              <i className="large material-icons">close</i>
+              <Icon name="close">close</Icon>
             ) : (
-              <i className="large material-icons">add</i>
+              <Icon name="add">add</Icon>
             )}
           </button>
         </div>
