@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import firebase from "firebase";
+
 import { connect } from "react-redux";
 import {
   Button,
@@ -14,79 +17,193 @@ import {
 } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { Switch, Route, BrowserRouter, NavLink } from "react-router-dom";
 
-import ToDoList from "./ToDoList";
+import Login from "../containers/pages/Login";
+import HomePage from "../containers/pages/HomePage";
+import BuildingList from "../containers/pages/BuildingList";
+import ContactList from "../containers/pages/ContactList";
+import FilingList from "../containers/pages/FilingList";
+import InspectionsList from "../containers/pages/InspectionsList";
+import ProjectList from "../containers/pages/ProjectList";
+import ProjectAdd from "../containers/pages/ProjectAdd";
+import Settings from "../containers/pages/Settings";
+import TaskList from "../containers/pages/TaskList";
+import ViolationList from "../containers/pages/ViolationList";
 import HamburgerButton from "../components/HamburgerButton";
+import AppHeader from "../components/AppHeader";
+
+const uiConfig = {
+  // Popup signin flow rather than redirect flow.
+  signInFlow: "popup",
+  // We will display Google and Facebook as auth providers.
+  signInOptions: [
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    firebase.auth.TwitterAuthProvider.PROVIDER_ID
+  ],
+  callbacks: {
+    // Avoid redirects after sign-in.
+    signInSuccess: () => false
+  }
+};
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      visible: false
+      visible: true,
+      location: "home",
+      isSignedIn: false,
+      user: {}
     };
+  }
+
+  uiConfig = {
+    // Popup signin flow rather than redirect flow.
+    signInFlow: "popup",
+    // We will display Google and Facebook as auth providers.
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID
+    ],
+    callbacks: {
+      // Avoid redirects after sign-in.
+      signInSuccess: () => false
+    }
+  };
+
+  // Listen to the Firebase Auth state and set the local state.
+  componentDidMount() {
+    this.unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged(user => this.setState({ isSignedIn: !!user, user }));
+  }
+
+  // Make sure we un-register Firebase observers when the component unmounts.
+  componentWillUnmount() {
+    this.unregisterAuthObserver();
   }
 
   toggleVisibility = () => this.setState({ visible: !this.state.visible });
   render() {
-    const { visible } = this.state;
-    return (
-      <Sidebar.Pushable as={Segment}>
-        <Sidebar
-          as={Menu}
-          animation="push"
-          width="thin"
-          visible={visible}
-          icon="labeled"
-          vertical
-          inverted
-        >
-          <Menu.Item name="home">
-            <Icon name="home" />
-            Home
-          </Menu.Item>
-          <Menu.Item name="projects">
-            <Icon name="folder open" />
-            Projects
-          </Menu.Item>
-          <Menu.Item name="buildings">
-            <Icon name="building outline" />
-            Buildings
-          </Menu.Item>
-          <Menu.Item name="tasks">
-            <Icon name="tasks" />
-            Tasks
-          </Menu.Item>
-          <Menu.Item name="settings">
-            <Icon name="cogs" />
-            Filings
-          </Menu.Item>
-                    <Menu.Item name="inspections">
-            <Icon name="search" />
-            Inspections
-          </Menu.Item>
-          <Menu.Item name="violations">
-            <Icon name="ban" />
-            Violations
-          </Menu.Item>
-          <Menu.Item name="contacts">
-            <Icon name="address book outline" />
-            Contacts
-          </Menu.Item>
+    const user = firebase.auth().currentUser;
+    const { visible, location } = this.state;
 
-          <Menu.Item name="settings">
-            <Icon name="cogs" />
-            Settings
-          </Menu.Item>
-        </Sidebar>
-        <Sidebar.Pusher>
-          <Segment basic>
-            <HamburgerButton active={this.state.visible} handleClick={this.toggleVisibility}/>
-            <Header as="h3">Filings</Header>
-            <ToDoList />
-          </Segment>
-        </Sidebar.Pusher>
-      </Sidebar.Pushable>
+    if (!this.state.isSignedIn) {
+      return (
+        <BrowserRouter>
+          <div className="full-height">
+            <AppHeader userName={null}/>
+            <h1>XPDTR</h1>
+            <p>Please sign-in:</p>
+            <StyledFirebaseAuth
+              uiConfig={uiConfig}
+              firebaseAuth={firebase.auth()}
+            />
+          </div>
+        </BrowserRouter>
+      );
+    }
+    return (
+      <BrowserRouter>
+        <div className="full-height">
+         <AppHeader userName={user.displayName}/>
+          <Sidebar.Pushable as={Segment} className="sidebar-no-border">
+            <Sidebar
+              as={Menu}
+              animation="push"
+              width="thin"
+              visible={visible}
+              icon="labeled"
+              vertical
+              inverted
+            >
+              <Menu.Item name="home">
+                <NavLink to="/">
+                  <Icon name="home" />
+                  Home
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="projects">
+                <NavLink to="/Projects">
+                  <Icon name="folder open" />
+                  Projects
+                </NavLink>
+                <NavLink to="/AddProject">
+                  <Icon name="add circle" />
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="buildings">
+                <NavLink to="/Buildings">
+                  <Icon name="building outline" />
+                  Buildings
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="tasks">
+                <NavLink to="/Tasks">
+                  <Icon name="tasks" />
+                  Tasks
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="filings">
+                <NavLink to="/Filings">
+                  <Icon name="cogs" />
+                  Filings
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="inspections">
+                <NavLink to="/Inspections">
+                  <Icon name="search" />
+                  Inspections
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="violations">
+                <NavLink to="/Violations">
+                  <Icon name="ban" />
+                  Violations
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="contacts">
+                <NavLink to="/Contacts">
+                  <Icon name="address book outline" />
+                  Contacts
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item name="settings">
+                <NavLink to="/Settings">
+                  <Icon name="cogs" />
+                  Settings
+                </NavLink>
+              </Menu.Item>
+            </Sidebar>
+            <Sidebar.Pusher>
+              <HamburgerButton
+                active={this.state.visible}
+                handleClick={this.toggleVisibility}
+              />
+
+              <Switch>
+                <Route exact path="/" component={HomePage} />
+                <Route exact path="/Home" component={HomePage} />
+                <Route exact path="/Buildings" component={BuildingList} />
+                <Route exact path="/Projects" component={ProjectList} />
+                <Route exact path="/AddProject" component={ProjectAdd} />
+                <Route exact path="/Contacts" component={ContactList} />
+                <Route exact path="/Settings" component={Settings} />
+                <Route exact path="/Filings" component={FilingList} />
+                <Route exact path="/Tasks" component={TaskList} />
+                <Route exact path="/Violations" component={ViolationList} />
+              </Switch>
+              <Button onClick={() => firebase.auth().signOut()} />
+            </Sidebar.Pusher>
+
+          </Sidebar.Pushable>
+        </div>
+      </BrowserRouter>
     );
   }
 }

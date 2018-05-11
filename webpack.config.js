@@ -1,7 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: ["babel-polyfill", "./src/index.js"],
   resolve: {
     extensions: ["*", ".js", ".jsx", ".json"]
   },
@@ -30,6 +30,20 @@ module.exports = {
       {
         test: /\.css$/,
         loader: "style-loader!css-loader"
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: "style-loader" // creates style nodes from JS strings
+          },
+          {
+            loader: "css-loader" // translates CSS into CommonJS
+          },
+          {
+            loader: "less-loader" // compiles Less to CSS
+          }
+        ]
       }
     ]
   },

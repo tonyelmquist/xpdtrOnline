@@ -1,4 +1,4 @@
-import './css/main.css';
+import './styles/main.less';
 import '../node_modules/semantic-ui-css/semantic.min.css'
 
 import React from "react";

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
-import * as actions from "../actions";
 import ToDoListItem from "../components/ToDoListItem";
 import axios from "axios";
 import {Icon} from 'semantic-ui-react';

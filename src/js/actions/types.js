@@ -1,2 +1,2 @@
-export const FETCH_TODOS = "FETCH_TODOS";
+export const FETCH_PROJECTS = "FETCH_PROJECTS";
 export const FETCH_USER = "FETCH_USER";
