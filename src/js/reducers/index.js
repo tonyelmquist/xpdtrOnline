@@ -1,7 +1,9 @@
 import { combineReducers } from "redux";
 
-import data from "./dataReducer";
+import projects from "./projectsReducer";
+import extendedUser from "./extendedUserReducer";
 
 export default combineReducers({
-  data
+  extendedUser,
+  projects
 });

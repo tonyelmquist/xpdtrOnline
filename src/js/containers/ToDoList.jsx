@@ -4,6 +4,7 @@ import _ from "lodash";
 import ToDoListItem from "../components/ToDoListItem";
 import axios from "axios";
 import {Icon} from 'semantic-ui-react';
+import * as actions from "../actions";
 
 class ToDoList extends Component {
   state = {

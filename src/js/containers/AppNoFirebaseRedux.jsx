@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { withFirebase, firebaseConnect } from "react-redux-firebase";
+import React from "react";
+import ReactDOM from "react-dom";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import * as actions from "../actions";
+
+import { connect } from "react-redux";
 import {
   Button,
   Segment,
@@ -32,9 +33,8 @@ import ViolationList from "../containers/pages/ViolationList";
 import HamburgerButton from "../components/HamburgerButton";
 import AppHeader from "../components/AppHeader";
 
-class App extends Component {
-
-    constructor(props) {
+class App extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
@@ -44,12 +44,14 @@ class App extends Component {
       user: {},
     };
   }
+
+  // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
-    this.unregisterAuthObserver = this.props.firebase
+    this.unregisterAuthObserver = firebase
       .auth()
       .onAuthStateChanged(user => {
         this.setState({ isSignedIn: !!user, user });
-        // this.props.fetchUser(user.uid);
+        this.props.fetchUser(user.uid);
       });
   }
 
@@ -59,31 +61,37 @@ class App extends Component {
   }
 
   logout = () => {
-    this.props.firebase.auth().signOut();
-  };
+    firebase.auth().signOut();
+  }
+
+  toggleVisibility = () => this.setState({ visible: !this.state.visible });
   render() {
     const uiConfig = {
-      // Popup signin flow rather than redirect flow.
-      signInFlow: "popup",
-      // We will display Google and Facebook as auth providers.
-      signInOptions: [
-        this.props.firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        this.props.firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-        this.props.firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        this.props.firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        this.props.firebase.auth.TwitterAuthProvider.PROVIDER_ID
-      ],
-      callbacks: {
-        // Avoid redirects after sign-in.
-        signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+  // Popup signin flow rather than redirect flow.
+  signInFlow: "popup",
+  // We will display Google and Facebook as auth providers.
+  signInOptions: [
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    firebase.auth.TwitterAuthProvider.PROVIDER_ID
+  ],
+    callbacks: {
+      // Avoid redirects after sign-in.
+      signInSuccessWithAuthResult: (authResult, redirectUrl) => {
           const isNewUser = authResult.additionalUserInfo.isNewUser;
           this.setState({ isNewUser });
           return false;
-        }
       }
-    };
-    const user = this.props.firebase.auth().currentUser;
-if (!this.state.isSignedIn) {
+    }
+};
+    const user = firebase.auth().currentUser;
+    let extendedUser = this.props.extendedUser === null ?  {} : this.props.extendedUser
+    extendedUser = Object.values(extendedUser)[0] ? Object.values(extendedUser)[0] : {};
+    const { visible, location } = this.state;
+
+    if (!this.state.isSignedIn) {
       return (
         <BrowserRouter>
           <div className="full-height">
@@ -92,7 +100,7 @@ if (!this.state.isSignedIn) {
             <p>Please sign-in:</p>
             <StyledFirebaseAuth
               uiConfig={uiConfig}
-              firebaseAuth={this.props.firebase.auth()}
+              firebaseAuth={firebase.auth()}
             />
           </div>
         </BrowserRouter>
@@ -107,7 +115,7 @@ if (!this.state.isSignedIn) {
               as={Menu}
               animation="push"
               width="thin"
-              visible={this.state.visible}
+              visible={visible}
               icon="labeled"
               vertical
               inverted
@@ -177,10 +185,10 @@ if (!this.state.isSignedIn) {
               />
 
               <Switch>
-                <Route exact path="/" render={props => <HomePage user={this.state.user} isNewUser={this.state.isNewUser} {...props} />} />
+                <Route exact path="/" render={props => <HomePage user={this.state.user} extendedUser={extendedUser} {...props} />} />
                 <Route exact path="/Home" render={props => <HomePage user={this.state.user} extendedUser={this.state.extendedUser} {...props} />} />
                 <Route exact path="/Buildings" component={BuildingList} />
-                <Route exact path="/Projects" render={props => <ProjectList user={this.state.user} projects={this.props.projects} {...props} />} />
+                <Route exact path="/Projects" render={props => <ProjectList user={this.state.user} {...props} />} />
                 <Route exact path="/AddProject" render={props => <ProjectAdd user={this.state.user} {...props} />} />
                 <Route exact path="/Contacts" component={ContactList} />
                 <Route exact path="/Settings" component={Settings} />
@@ -188,7 +196,7 @@ if (!this.state.isSignedIn) {
                 <Route exact path="/Tasks" component={TaskList} />
                 <Route exact path="/Violations" component={ViolationList} />
               </Switch>
-              <Button onClick={() => this.props.firebase.auth().signOut()} />
+              <Button onClick={() => firebase.auth().signOut()} />
             </Sidebar.Pusher>
 
           </Sidebar.Pushable>
@@ -198,11 +206,10 @@ if (!this.state.isSignedIn) {
   }
 }
 
-export default compose(
-  firebaseConnect((props) => [
-    { path: 'projects' } // string equivalent 'todos'
-  ]),
-  connect((state, props) => ({
-    projects: state.firebase.data.projects
-  }))
-)(App)
+const mapStateToProps = ({ extendedUser }) => {
+  return {
+    extendedUser
+  };
+};
+
+export default connect(mapStateToProps, actions)(App);

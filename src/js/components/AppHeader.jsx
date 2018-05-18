@@ -19,24 +19,13 @@ const AppHeader = props => (
         <Icon name="send outline" className="logo-icon"/>
       </Menu.Item>
       <Menu.Item as="a">{props.location.pathname.replace('/','')}</Menu.Item>
-
+      {props.userName ? 
       <Dropdown item simple text={props.userName} className="logout-menu">
         <Dropdown.Menu>
-          <Dropdown.Item>List Item</Dropdown.Item>
-          <Dropdown.Item>List Item</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Header>Header Item</Dropdown.Header>
-          <Dropdown.Item>
-            <i className="dropdown icon" />
-            <span className="text">Submenu</span>
-            <Dropdown.Menu>
-              <Dropdown.Item>List Item</Dropdown.Item>
-              <Dropdown.Item>List Item</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown.Item>
-          <Dropdown.Item>List Item</Dropdown.Item>
+          <Dropdown.Item>Settings</Dropdown.Item>
+          <Dropdown.Item onClick={props.logout}>Logout</Dropdown.Item>
         </Dropdown.Menu>
-      </Dropdown>
+      </Dropdown> : null}
     </Container>
   </Menu>
 );

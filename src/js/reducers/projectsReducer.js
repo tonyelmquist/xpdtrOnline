@@ -5,6 +5,7 @@ export default (state = {}, action) => {
     case FETCH_PROJECTS:
       return action.payload;
     default:
+      console.log(action.type);
       return state;
   }
 };

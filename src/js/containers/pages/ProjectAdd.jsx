@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as actions from "../../actions";
-import {Container, Segment, Table, Header, Form} from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Container, Segment, Table, Header, Form } from "semantic-ui-react";
+import { firebaseConnect, withFirebase } from 'react-redux-firebase'
 
 class ProjectAdd extends Component {
-
- state = {
+  state = {
     addFormVisible: false,
-    project: {}
+    project: {
+      userID: this.props.user.uid
+    }
   };
 
-  handleInputChange = (e, {name, value}) => {
-      console.log(e);
+  handleInputChange = (e, { name, value }) => {
+    console.log(e);
     this.setState(prevState => ({
-    project: {
+      project: {
         ...prevState.project,
         [name]: value
-    }
-    }))
+      }
+    }));
   };
 
-  getDOBJob = addFormValue => {
+/*  getDOBJob = addFormValue => {
     const { addProject } = this.props;
     axios
       .get(
@@ -37,40 +37,62 @@ class ProjectAdd extends Component {
       .catch(function(error) {
         console.log(error);
       });
-  };
+  };*/
 
   handleFormSubmit = event => {
-    const { addProject } = this.props;
-    const { project } = this.state;
-    event.preventDefault();
-    addProject({ project });
- //   this.getDOBJob(addFormValue);
-  };
+this.props.firebase.push('projects', this.state.project);
+
+}
 
   constructor(props) {
     super(props);
   }
 
-    render() {
-        return (
-            <Segment fluid className="app-content">
-             <Form onSubmit={this.handleFormSubmit}>
-        <Form.Group widths='equal'>
-          <Form.Input fluid label='Project Name' placeholder='Project Name' name="projectName" onChange={this.handleInputChange} />
-          <Form.Input fluid label='Building' placeholder='Building' name="building" onChange={this.handleInputChange} />
-          <Form.Dropdown fluid label='Type' name="projectType" options={[{text: "type 1", value: "type 1"}, {text: "type 2", value: "type 2"}]} placeholder='Type' search selection onChange={this.handleInputChange} />
-        </Form.Group>
-        <Form.Button>Submit</Form.Button>
-      </Form>
-            </Segment>
-        );
-    }
+  render() {
+    return (
+      <Segment fluid className="app-content">
+        <Form onSubmit={this.handleFormSubmit}>
+          <Form.Group widths="equal">
+            <Form.Input
+              fluid
+              label="Project Name"
+              placeholder="Project Name"
+              name="projectName"
+              onChange={this.handleInputChange}
+            />
+            <Form.Input
+              fluid
+              label="Building"
+              placeholder="Building"
+              name="building"
+              onChange={this.handleInputChange}
+            />
+            <Form.Dropdown
+              fluid
+              label="Type"
+              name="projectType"
+              options={[
+                { text: "type 1", value: "type 1" },
+                { text: "type 2", value: "type 2" }
+              ]}
+              placeholder="Type"
+              search
+              selection
+              onChange={this.handleInputChange}
+            />
+          </Form.Group>
+          <Form.Button>Submit</Form.Button>
+        </Form>
+      </Segment>
+    );
+  }
 }
 
-const mapStateToProps = ({ data }) => {
-  return {
-    data
-  };
-};
+ProjectAdd.propTypes = {
+  firebase: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  })
+}
 
-export default connect(mapStateToProps, actions)(ProjectAdd);
+export default withFirebase(ProjectAdd)
+

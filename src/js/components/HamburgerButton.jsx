@@ -1,7 +1,7 @@
 import React from 'react';
 
 const HamburgerButton = props => (
-<button className={`hamburger hamburger--arrowalt ${props.active ? 'is-active' : 'not-active'}`} type="button" onClick={props.handleClick}>
+<button className={`hamburger hamburger--spin ${props.active ? 'is-active' : 'not-active'}`} type="button" onClick={props.handleClick}>
   <span className="hamburger-box">
     <span className="hamburger-inner"></span>
   </span>
@@ -10,7 +10,5 @@ const HamburgerButton = props => (
 );
 
 export default HamburgerButton;
- 
- 
  
 
