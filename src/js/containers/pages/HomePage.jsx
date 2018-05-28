@@ -11,6 +11,9 @@ import {
   Button
 } from "semantic-ui-react";
 
+
+import Updates from './Updates';
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -150,7 +153,7 @@ class HomePage extends Component {
             </Form>
           </Segment>
         ) : (
-          <Header>Profile Complete</Header>
+          <Updates userID={this.props.user.uid}/>
         )}
       </Container>
     );

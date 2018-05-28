@@ -8,7 +8,8 @@ import {
   Icon,
   Menu,
   Container,
-  Dropdown
+  Dropdown,
+  Checkbox
 } from "semantic-ui-react";
 
 const AppHeader = props => (
@@ -18,6 +19,7 @@ const AppHeader = props => (
         XPDTR
         <Icon name="send outline" className="logo-icon"/>
       </Menu.Item>
+       <Checkbox toggle className="data-toggle"/>
       <Menu.Item as="a">{props.location.pathname.replace('/','')}</Menu.Item>
       {props.userName ? 
       <Dropdown item simple text={props.userName} className="logout-menu">

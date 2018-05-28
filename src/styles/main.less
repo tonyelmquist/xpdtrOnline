@@ -85,9 +85,11 @@
 
 .hamburger {
   transform: scale(.4);
-      margin-top: -13px;
-    margin-left: -16px;
+  margin-top: -18px;
+    margin-left: -21px;
     outline: none;
+    background-color: @greyish;
+    color:@whitish;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -140,8 +142,36 @@
   font-size: 14px;
 }
 
-.ui.table.list-content{
+.ui.table.list-content, div.list-content{
   margin: -14px 10px;
   width: calc(100% - 20px);
   cursor: pointer;
+}
+
+ div.list-content{
+  margin: -14px 0;
+  width: 100%;
+}
+
+
+.ui.checkbox.data-toggle {
+  position: absolute;
+  right: 150px;
+  top: 17px;
+}
+
+.ui.page.modals.transition.visible {
+    display: flex !important;
+}
+
+i.add.circle.icon.menu-icon {
+  margin-left: 10px;
+}
+
+button.ui.button.below-table{
+  margin: 10px 0 0 10px;
+}
+
+span.hamburger-inner, span.hamburger-inner:after, span.hamburger-inner:before{
+  background-color: @whitish;
 }

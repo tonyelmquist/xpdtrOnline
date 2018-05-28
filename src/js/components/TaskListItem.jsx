@@ -1,21 +1,20 @@
 import React, { Component } from "react";
-import { Table, Icon, Modal, Header, Button } from "semantic-ui-react";
-import { withRouter } from "react-router";
+import { Table, Icon, Modal, Header, Button} from "semantic-ui-react";
 
-class ProjectListItem extends Component {
+class TaskListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modalOpen: false
     };
   }
-  handleClick = projectId => {
+  handleClick = taskId => {
     const { history } = this.props;
-    history.push(`/ProjectDetail/${projectId}`);
+    history.push(`/TaskDetail/${taskId}`);
   };
 
-  handleDelete = projectId => {
-    this.props.handleDelete(projectId);
+  handleDelete = taskId => {
+    this.props.handleDelete(taskId);
     this.setState({ modalOpen: false });
   };
 
@@ -26,21 +25,23 @@ class ProjectListItem extends Component {
    closeModal =()  => {
     this.setState({ modalOpen: false });
   };
-
   render() {
-    const { projectId, project, key } = this.props;
+    const { taskId, task } = this.props;
     return (
       <Table.Row>
-        <Table.Cell>{project["projectName"]}</Table.Cell>
-        <Table.Cell>{project["building"]}</Table.Cell>
-        <Table.Cell>{project["projectType"]}</Table.Cell>
-        <Table.Cell>
-          <Icon name="ellipsis horizontal" onClick={() => this.handleClick(projectId)} />
+        <Table.Cell>{task["title"]}</Table.Cell>
+        <Table.Cell>{task["assignedTo"]}</Table.Cell>
+        <Table.Cell>{task["project"]}</Table.Cell>
+        <Table.Cell>{task["dueDate"]}</Table.Cell>
+        <Table.Cell>{task["status"]}</Table.Cell>
+        <Table.Cell>{task["description"]}</Table.Cell>
+         <Table.Cell>
+          <Icon name="ellipsis horizontal" onClick={() => this.handleClick(taskId)} />
             <Icon name="delete" onClick={() => this.openModal()} />
           <Modal open={this.state.modalOpen} size="tiny">
-            <Header icon="warning" content="Delete Project" />
+            <Header icon="warning" content="Delete Task" />
             <Modal.Content>
-              <p>Are you sure you want to delete this project?</p>
+              <p>Are you sure you want to delete this task?</p>
             </Modal.Content>
             <Modal.Actions>
               <Button color="red" onClick={() => this.closeModal()}>
@@ -48,7 +49,7 @@ class ProjectListItem extends Component {
               </Button>
               <Button
                 color="green"
-                onClick={() => this.handleDelete(projectId)}
+                onClick={() => this.handleDelete(taskId)}
               >
                 <Icon name="checkmark" /> Yes
               </Button>
@@ -60,4 +61,4 @@ class ProjectListItem extends Component {
   }
 }
 
-export default withRouter(ProjectListItem);
+export default TaskListItem;

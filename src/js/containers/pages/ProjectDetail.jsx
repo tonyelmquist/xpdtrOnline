@@ -1,0 +1,39 @@
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+import { Table, Segment, Tab, Form } from "semantic-ui-react";
+import { compose } from 'redux'
+import { withFirebase, firebaseConnect } from "react-redux-firebase";
+
+import TaskList from './TaskList';
+
+class ProjectDetail extends Component {
+    render() {
+  const panes = [
+  { menuItem: 'Details', render: () => <Tab.Pane>Tab 1 Content</Tab.Pane> },
+  { menuItem: 'Filings', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
+  { menuItem: 'Documents', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
+  { menuItem: 'Tasks', render: () => <Tab.Pane><TaskList project={props.match.params.projectId} /></Tab.Pane> },
+  { menuItem: 'Comments', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> }, 
+]
+
+return (
+  <Tab panes={panes} />
+)
+    }
+  
+}
+export default compose(
+  firebaseConnect((props) => [
+ { path: '/tasks', queryParams: [ 'orderByChild=projectID', 'equalTo=' + props.match.params.projectId ] },
+ { path: '/filings', queryParams: [ 'orderByChild=projectID', 'equalTo=' + props.match.params.projectId ] },
+ { path: '/comments', queryParams: [ 'orderByChild=projectID', 'equalTo=' + props.match.params.projectId ] },
+ { path: `/projects/${props.match.params.projectId}`}
+  ]),
+  connect((state, props) => ({
+    tasks: state.firebase.data.tasks,
+    filings: state.firebase.data.filings,
+    comments: state.firebase.data.comments,
+    project: state.firebase.data.projects[props.match.params.projectId]
+  }))
+)(ProjectDetail)
