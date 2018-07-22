@@ -28,6 +28,7 @@ import InspectionsList from "../containers/pages/InspectionsList";
 import ProjectList from "../containers/pages/ProjectList";
 import ProjectAdd from "../containers/pages/ProjectAdd";
 import ProjectDetail from "../containers/pages/ProjectDetail";
+import FormDetail from "../containers/pages/FormDetail";
 import Settings from "../containers/pages/Settings";
 import TaskList from "../containers/pages/TaskList";
 import ViolationList from "../containers/pages/ViolationList";
@@ -249,6 +250,10 @@ class App extends Component {
                   path="/ProjectDetail/:projectId"
                   component={ProjectDetail}
                 />
+                <Route
+                  path="/FormDetail/:formId"
+                  component={FormDetail}
+                />
                 <Route exact path="/Contacts" component={ContactList} />
                 <Route exact path="/Settings" component={Settings} />
                 <Route
@@ -265,7 +270,13 @@ class App extends Component {
                     <TaskList user={this.state.user} {...props} />
                   )}
                 />
-                <Route exact path="/Violations" component={ViolationList} />
+                <Route
+                  exact
+                  path="/Violations"
+                  render={props => (
+                    <ViolationList user={this.state.user} {...props} />
+                  )}
+                />
               </Switch>
               {/*<Button onClick={() => this.props.firebase.auth().signOut()} />*/}
             </Sidebar.Pusher>

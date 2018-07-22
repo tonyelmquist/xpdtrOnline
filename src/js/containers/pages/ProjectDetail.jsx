@@ -6,19 +6,24 @@ import { compose } from 'redux'
 import { withFirebase, firebaseConnect } from "react-redux-firebase";
 
 import TaskList from './TaskList';
+import FormList from './FormList';
 
 class ProjectDetail extends Component {
     render() {
+
+const user = this.props.firebase.auth().currentUser;
+
   const panes = [
   { menuItem: 'Details', render: () => <Tab.Pane>Tab 1 Content</Tab.Pane> },
   { menuItem: 'Filings', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
   { menuItem: 'Documents', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
+  { menuItem: 'Forms', render: () => <Tab.Pane><FormList user={user} project={this.props.project}/></Tab.Pane> },
   { menuItem: 'Tasks', render: () => <Tab.Pane><TaskList project={props.match.params.projectId} /></Tab.Pane> },
   { menuItem: 'Comments', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> }, 
 ]
 
 return (
-  <Tab panes={panes} />
+  <Tab panes={panes} className="tab-content"/>
 )
     }
   
