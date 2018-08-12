@@ -16,6 +16,7 @@ class App extends React.Component {
 
   componentDidMount = () => {
     PSPDFKit.load({
+      disableWebAssemblyStreaming: true,
       container: "#pdfTarget",
       pdf: "http://localhost:8080/static/pdf/peo1.pdf",
       licenseKey:
