@@ -12,7 +12,6 @@ class ProjectAdd extends Component {
   };
 
   handleInputChange = (e, { name, value }) => {
-    console.log(e);
     this.setState(prevState => ({
       project: {
         ...prevState.project,

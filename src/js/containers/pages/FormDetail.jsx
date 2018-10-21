@@ -1,10 +1,64 @@
+/*import React, { Component } from "react";
+import PSPDFKitWeb from "pspdfkit";
+
+export default class PSPDFKit extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this._instance = null;
+    this._container = null;
+
+    this.onRef = this.onRef.bind(this);
+    this.load = this.load.bind(this);
+    this.unload = this.unload.bind(this);
+  }
+
+  onRef(container) {
+    this._container = container;
+  }
+
+  async load(props) {
+    console.log(`Loading ${props.pdfUrl}`);
+
+    this._instance = await PSPDFKitWeb.load({
+      pdf: props.pdfUrl,
+      container: this._container,
+      licenseKey: props.licenseKey,
+      baseUrl: props.baseUrl
+    });
+    console.log("Successfully mounted PSPDFKit", this._instance);
+  }
+
+  unload() {
+    PSPDFKitWeb.unload(this._instance || this._container);
+    this._instance = null;
+  }
+
+  componentDidMount() {
+    this.load(this.props);
+  }
+
+  componentDidUpdate(nextProps) {
+    this.unload();
+    this.load(nextProps);
+  }
+
+  componentWillUnmount() {
+    this.unload();
+  }
+
+  render() {
+    return <div ref={this.onRef} style={{ width: "100%", height: "100%", position: "absolute" }} />;
+  }
+}*/
+
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { Button, Segment, Container, Grid } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import PSPDFKit from 'pspdfkit';
+import PSPDFKit from "pspdfkit";
 
 class App extends React.Component {
   constructor(props) {
@@ -16,7 +70,6 @@ class App extends React.Component {
 
   componentDidMount = () => {
     PSPDFKit.load({
-      disableWebAssemblyStreaming: true,
       container: "#pdfTarget",
       pdf: "http://localhost:8080/static/pdf/peo1.pdf",
       licenseKey:

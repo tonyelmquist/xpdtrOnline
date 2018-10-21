@@ -252,7 +252,9 @@ class App extends Component {
                 />
                 <Route
                   path="/FormDetail/:formId"
-                  component={FormDetail}
+                  render={props => (
+                    <FormDetail user={this.state.user} pdfUrl="/static/pdf/pw1.pdf" licenseKey="rf306vEoMRZ7Mnz3oUOdRjdr1keZ_k0igzwA6wijcltfwYzsKxyZgh4XcRsam" {...props} />
+                  )}
                 />
                 <Route exact path="/Contacts" component={ContactList} />
                 <Route exact path="/Settings" component={Settings} />
