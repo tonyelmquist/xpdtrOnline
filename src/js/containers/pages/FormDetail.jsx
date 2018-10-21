@@ -58,7 +58,6 @@ import { connect } from "react-redux";
 import { Button, Segment, Container, Grid } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import PSPDFKit from "pspdfkit";
 
 class App extends React.Component {
   constructor(props) {
@@ -72,8 +71,7 @@ class App extends React.Component {
     PSPDFKit.load({
       container: "#pdfTarget",
       pdf: "http://localhost:8080/static/pdf/peo1.pdf",
-      licenseKey:
-        "xfG6eSjNQgaaSbCsa0zt6GzxfQm8k7AfZwxT2T44OS7QCjbdwdAbeX2GixYWwSpLHSXPKkWkkDqCV9mtrUTeSl-moal1tNFXgKUZljwxfj593MzUuiqNhFxM-W7BOXG4wQt4kv3UWquhFFvFL2ielwnjgnJO3lVZ69Gy5rsuInSi4O7w-wojk1P-9iWUi5QJVfRKwEC5KwRQBTtO9x6WlXpIMrjSIy3CuWu1T92JeU-x0Xk0sVphcBBXK3YWdTcqXXWLX5W-Tw6rSnpTdhhRMYh7S1y7JFoiYqjMGYdzN1_oojwokreKrrGAVKZAoEdg1Fe8egkFGsOQRbKCEMepWr50yZyWK9hEEiKRNMEW-LpKP9vDE4jemQNJYmaxdX47SwNtMU21TPcds88IP6wdVJncpVKEi6K__2BWmFtSKY92Nu5v0R_4Dhhz0yOA8r0k"
+      licenseKey: "JEWtVj4khW1LJSVKmWg2763WtluuBtvGzYmzD-2yGiAlBn_VyfiKtGjkSAHqakcZHSCSKbFUtx5uY8ffQ87lAvMLtmd4Z5ZVKOYd_UC-5liMcp0CFKUMcLa0y7I-jYQ7YeWDxSJa_2Y-IBOz5f_njPOSVtwqjr88hG3xsC2uXQ0YMWKEudyvN4Hgk26XWFiS-43D61SJUEzrtRphYfrgMRIkrg9c9eCGInPtIeT6C7ZkWjotjJVvfzAizA8Cat4laMLMDi7IOrdsWAY1kGC5E3B4VNJsKyS4KOqeaEf5i_CAFn3iA2HgDLHsU5RcBbCZd3b04VlwUFo6N8doDiIRFfjOckDHIykQUXnlp7uHK-I-iRn7fX2z0GAzTH_5qZKy7hxE724Qz4-mJK8WB5FC1idjWtjZVLaf-oX6JaHiE_098kQMeMCwgkJkN9ct1AtK"
     })
       .then(instance => {
         console.log("PSPDFKit loaded", instance);
