@@ -11,7 +11,7 @@ import  { firebaseReducer } from 'react-redux-firebase'
 // import 'firebase/firestore' // <- needed if using firestore
 // import 'firebase/functions' // <- needed if using httpsCallable
 
-import App from './js/containers/App'
+import App from './js/containers/App.jsx'
 
 import { reactReduxFirebase } from 'react-redux-firebase'
 

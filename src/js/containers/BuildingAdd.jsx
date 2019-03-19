@@ -22,24 +22,6 @@ class TaskAdd extends Component {
     }));
   };
 
-  /*  getDOBJob = addFormValue => {
-    const { addTask } = this.props;
-    axios
-      .get(
-        `https://data.cityofnewyork.us/resource/rvhx-8trz.json?job__=${addFormValue}`
-      ) // fetch the current XKCD comic. The site does not support CORS requests, so we make the request via a pass-through node server
-      .then(response => {
-        const newJob = {
-          title: addFormValue,
-          filings: response.data
-        }; // get the number of the latest cartoon
-        addToDo(newJob);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  };*/
-
   handleFormSubmit = event => {
     this.props.firebase.push("Tasks", this.state.Task);
   };

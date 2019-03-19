@@ -125,8 +125,10 @@ class App extends Component {
             >
               <Menu.Item name="home">
                 <NavLink to="/">
-                  <Icon name="home" />
-                  Home
+                  <Button icon labelPosition="left">
+                    <Icon name="home" />
+                    Home
+                  </Button>
                 </NavLink>
               </Menu.Item>
               <Menu.Item name="projects">
@@ -253,7 +255,12 @@ class App extends Component {
                 <Route
                   path="/FormDetail/:formId"
                   render={props => (
-                    <FormDetail user={this.state.user} pdfUrl="/static/pdf/pw1.pdf" licenseKey="rf306vEoMRZ7Mnz3oUOdRjdr1keZ_k0igzwA6wijcltfwYzsKxyZgh4XcRsam" {...props} />
+                    <FormDetail
+                      user={this.state.user}
+                      pdfUrl="/static/pdf/pw1.pdf"
+                      licenseKey="rf306vEoMRZ7Mnz3oUOdRjdr1keZ_k0igzwA6wijcltfwYzsKxyZgh4XcRsam"
+                      {...props}
+                    />
                   )}
                 />
                 <Route exact path="/Contacts" component={ContactList} />
