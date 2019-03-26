@@ -123,14 +123,6 @@ class App extends Component {
               vertical
               inverted
             >
-              <Menu.Item name="home">
-                <NavLink to="/">
-                  <Button icon labelPosition="left">
-                    <Icon name="home" />
-                    Home
-                  </Button>
-                </NavLink>
-              </Menu.Item>
               <Menu.Item name="projects">
                 <NavLink to="/Projects">
                   <Icon name="folder open" />

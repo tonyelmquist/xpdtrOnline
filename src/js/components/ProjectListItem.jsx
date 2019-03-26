@@ -30,12 +30,12 @@ class ProjectListItem extends Component {
   render() {
     const { projectId, project, key } = this.props;
     return (
-      <Table.Row>
+      <Table.Row onClick={() => this.handleClick(projectId)}>
         <Table.Cell>{project["projectName"]}</Table.Cell>
         <Table.Cell>{project["building"]}</Table.Cell>
         <Table.Cell>{project["projectType"]}</Table.Cell>
         <Table.Cell>
-          <Icon name="ellipsis horizontal" onClick={() => this.handleClick(projectId)} />
+          <Icon name="ellipsis horizontal" />
             <Icon name="delete" onClick={() => this.openModal()} />
           <Modal open={this.state.modalOpen} size="tiny">
             <Header icon="warning" content="Delete Project" />

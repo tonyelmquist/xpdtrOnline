@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withRouter } from 'react-router'
+import { withRouter } from 'react-router';
+import {  NavLink } from "react-router-dom";
 import {
   Segment,
   Header,
@@ -16,11 +17,13 @@ const AppHeader = props => (
   <Menu fixed="top" inverted className="app-header">
     <Container>
       <Menu.Item as="a" header className="logo-item">
+      <NavLink to="/´">
         XPDTR
         <Icon name="send outline" className="logo-icon"/>
+        </NavLink>
       </Menu.Item>
        <Checkbox toggle className="data-toggle"/>
-      <Menu.Item as="a">{props.location.pathname.replace('/','')}</Menu.Item>
+      <Menu.Item as="a">{props.location.pathname.split('/')[1]}</Menu.Item>
       {props.userName ? 
       <Dropdown item simple text={props.userName} className="logout-menu">
         <Dropdown.Menu>
