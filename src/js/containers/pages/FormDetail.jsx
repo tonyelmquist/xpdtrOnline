@@ -63,14 +63,14 @@ class FormDetail extends React.Component {
     const h = window.innerHeight;
 
     return (
-      <Container>
+      <React.Fragment>
         <div
           id="pdfTarget"
           className="pdf-target"
           style={{ width: w, height: h }}
         />
         <Button onClick={this.saveForm}>Save form</Button>
-      </Container>
+      </React.Fragment>
     );
   }
 }

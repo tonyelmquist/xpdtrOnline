@@ -32,7 +32,6 @@ import FormDetail from "../containers/pages/FormDetail";
 import Settings from "../containers/pages/Settings";
 import TaskList from "../containers/pages/TaskList";
 import ViolationList from "../containers/pages/ViolationList";
-import HamburgerButton from "../components/HamburgerButton";
 import AppHeader from "../components/AppHeader";
 
 class App extends Component {
@@ -112,7 +111,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="full-height">
-          <AppHeader userName={user.displayName} logout={this.logout} />
+         
           <Sidebar.Pushable as={Segment} className="sidebar-no-border">
             <Sidebar
               as={Menu}
@@ -123,6 +122,12 @@ class App extends Component {
               vertical
               inverted
             >
+            <Menu.Item as="a" header className="logo-item">
+      <NavLink to="/´">
+        XPDTR
+        <Icon name="send outline" className="logo-icon"/>
+        </NavLink>
+      </Menu.Item>
               <Menu.Item name="projects">
                 <NavLink to="/Projects">
                   <Icon name="folder open" />
@@ -179,11 +184,7 @@ class App extends Component {
               </Menu.Item>
             </Sidebar>
             <Sidebar.Pusher>
-              <HamburgerButton
-                active={this.state.visible}
-                handleClick={this.toggleVisibility}
-              />
-
+            <AppHeader userName={user.displayName} logout={this.logout} toggleVisibility={this.toggleVisibility} visible={this.state.visible} />
               <Switch>
                 <Route
                   exact
