@@ -24,7 +24,7 @@ const AppHeader = props => (
               />
 
 
-       <Checkbox toggle className="data-toggle"/>
+      <div className="byline">XPDTR - Your paperwork, expedited.</div>
       <Menu.Item as="a">{props.location.pathname.split('/')[1]}</Menu.Item>
       {props.userName ? 
       <Dropdown item simple text={props.userName} className="logout-menu">

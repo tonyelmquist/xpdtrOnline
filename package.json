@@ -57,6 +57,7 @@
     "react-redux": "^5.0.7",
     "react-redux-firebase": "^2.2.6",
     "react-router-dom": "^4.2.2",
+    "react-semantic-toasts": "^0.5.0",
     "react-toastify": "^4.0.1",
     "redux": "^4.0.0",
     "redux-form": "^7.3.0",

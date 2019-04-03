@@ -19,17 +19,13 @@ class FormDetail extends React.Component {
   componentDidMount = () => {
     PSPDFKit.load({
       container: "#pdfTarget",
-      pdf: "/static/pdf/l2.pdf",
+      pdf: `/static/pdf/${this.props.form.formName}.pdf`,
       licenseKey:
         "rXG9hlOFZQGNFzHRawfA0PvMNuCJYhKtY5OGQ1XXJ3_7gXao4xgFNWsFVj5J9IN66v3BPCiMgvC2uofjkWQMUO5JhV8XXMRBYO9pirl1TBgHYt3VNQR2rkG9bRJzAZAM6FbxOxUNyFBPVG_8sZbNiXida2gCRQ5lJb5nkw7eqUr_GYvFUGlDLsSYkKeJznsAY_ltl19b7f6JRsfiBL6-cWU4oEH6en7M4W6rue4z0W9c8raSIreUKv5RFDOiBDa43U1gAjrvJzEqOjTY7mHa262FK1bRKbtNZEXrm_LuH8ZZGPLTOLgG6B-r5AvU0SeHXzKdHGdX6KTtuoUiVKmv-c7y1PEEv-kfSrlhkE_TRGBD9SO1kmCSEV7oA_UVUqz-v7LDs2Kmn7sPZaxz9on7bIudg5zNpg5dZ3h91E09ZLvE5rkdNX3NyV9OvbAyIox0"
     })
       .then(instance => {
         console.log("PSPDFKit loaded", instance);
         this.instance = instance;
-
-        console.log(this.props)
-
-  
           const updatedFormFieldValues = JSON.parse(this.props.form.formData)
 
 /*         instance.getFormFields().then(function(formFields) {
@@ -59,17 +55,18 @@ class FormDetail extends React.Component {
   };
 
   render() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const w = window.innerWidth - 150;
+    const h = window.innerHeight - 60;
 
     return (
       <React.Fragment>
-        <div
+        <div  
           id="pdfTarget"
           className="pdf-target"
-          style={{ width: w, height: h }}
+          style={{ width: w, height: h, marginTop: "-10px" }}
         />
-        <Button onClick={this.saveForm}>Save form</Button>
+        <Button primary onClick={this.saveForm} className="saveButton">Save form</Button>
+        <Button onClick={this.backForm} className="backButton">Back</Button>
       </React.Fragment>
     );
   }

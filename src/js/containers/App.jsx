@@ -185,6 +185,7 @@ class App extends Component {
             </Sidebar>
             <Sidebar.Pusher>
             <AppHeader userName={user.displayName} logout={this.logout} toggleVisibility={this.toggleVisibility} visible={this.state.visible} />
+            <div className="inside">
               <Switch>
                 <Route
                   exact
@@ -280,6 +281,7 @@ class App extends Component {
                   )}
                 />
               </Switch>
+              </div>
               {/*<Button onClick={() => this.props.firebase.auth().signOut()} />*/}
             </Sidebar.Pusher>
           </Sidebar.Pushable>
